@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>任务列表</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/css/mdb.min.css" rel="stylesheet">
+</head>
+<style>
+    .pt-3-half {
+        padding-top: 1.4rem;
+    }
+</style>
+
+<body>
+    <!--Navbar -->
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark orange lighten-1">
+        <a class="navbar-brand" href="#">my to do list</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+            aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+            <!-- <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">任务列表</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/db">数据库</a>
+                </li>
+            </ul> -->
+            <ul class="navbar-nav ml-auto nav-flex-icons">
+                <li class="nav-item avatar">
+                    <a class="nav-link p-0" href="#">
+                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
+                            class="rounded-circle z-depth-0" alt="avatar image" height="35">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--/.Navbar -->
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-2 alert" role="alert">
+
+            </div>
+        </div>
+        <!-- Editable table -->
+        <div class="card">
+            <h3 class="card-header text-center font-weight-bold text-uppercase py-4">任务列表</h3>
+            <div class="card-body">
+                <div id="table" class="table-editable">
+                    <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i
+                                class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="5%">任务ID</th>
+                                <th class="text-center">任务内容</th>
+                                <th class="text-center" width="5%">级别</th>
+                                <th class="text-center" width="5%">进度</th>
+                                <th class="text-center" width="20%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="pt-3-half" contenteditable="true" data-db='id'></td>
+                                <td class="pt-3-half" contenteditable="true" data-db='content'></td>
+                                <td class="pt-3-half" contenteditable="true" data-db='level'></td>
+                                <td class="pt-3-half" contenteditable="true" data-db='progress'></td>
+                                <td>
+                                    <span class="table-remove"><button type="button"
+                                            class="btn btn-danger btn-rounded btn-sm my-0">删除</button></span>
+                                    <span class="table-save"><button type="button"
+                                            class="btn btn-info btn-rounded btn-sm my-0">保存</button></span>
+                                </td>
+                            </tr>
+                            {{range .message}}
+                            <tr>
+                                <td class="pt-3-half" contenteditable="true" data-db='id'>{{.Id}}</td>
+                                <td class="pt-3-half" contenteditable="true" data-db='content'>
+                                    {{.Content}}---{{.Editortime}}</td>
+                                <td class="pt-3-half" contenteditable="true" data-db='level'>{{.Level}}</td>
+                                <td class="pt-3-half" contenteditable="true" data-db='progress'>{{.Progress}}</td>
+                                <td>
+                                    <span class="table-remove"><button type="button"
+                                            class="btn btn-danger btn-rounded btn-sm my-0">删除</button></span>
+                                    <span class="table-save"><button type="button"
+                                            class="btn btn-info btn-rounded btn-sm my-0">保存</button></span>
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Editable table -->
+    </div>
+
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js">
+    </script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/js/mdb.min.js">
+    </script>
+    <script>
+        (function ($) {
+            // $('.toast').toast('show');
+
+            const $tableID = $('#table');
+            const newTr = `
+<tr class="hide">
+    <td class="pt-3-half" contenteditable="true" data-db='id'></td>
+    <td class="pt-3-half" contenteditable="true" data-db='content'></td>
+    <td class="pt-3-half" contenteditable="true" data-db='level'></td>
+    <td class="pt-3-half" contenteditable="true" data-db='progress'></td>
+    <td>
+        <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">删除</button></span>
+        <span class="table-save"><button type="button" class="btn btn-info btn-rounded btn-sm my-0">保存</button></span>
+    </td>
+</tr>`;
+
+            $('.table-add').on('click', 'i', () => {
+
+                const $clone = $tableID.find('tbody tr').first().clone(true).removeClass('hide table-line');
+
+                if ($tableID.find('tbody tr').length === 0) {
+
+                    $('tbody').prepend(newTr);
+                }
+
+                $tableID.find('table').prepend($clone);
+            });
+
+            $tableID.on('click', '.table-remove', function () {
+                let dom = $(this).parents('tr')
+                let id = dom.children()[0].innerText
+                if (confirm("是否删除？")) {
+                    $.post("task/delete/" + id, function (e) {
+                        if (e.code == 2001) {
+                            dom.detach();
+                            $('.alert').addClass('alert-success').text(e.msg).hide(2000)
+                        } else {
+                            $('.alert').addClass('alert-danger').text(e.msg).hide(2000)
+                        }
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000)
+                    })
+                }
+            });
+
+            $tableID.on('click', '.table-save', function () {
+                const $row = $(this).parents('tr').children();
+                let arr = {}
+
+                $row.each(function () {
+                    let dom = $(this);
+                    let db = dom[0].dataset.db
+
+                    if (db) {
+                        if (db == 'level') {
+                            if (parseFloat(dom[0].innerText).toString() == "NaN") {
+                                $(this).text('')
+                                arr[db] = ''
+                            } else {
+                                arr[db] = parseFloat(dom[0].innerText)
+                            }
+                        } else {
+                            arr[db] = dom[0].innerText
+                        }
+                    }
+                })
+                if (parseFloat(arr['level']).toString() == "NaN") {
+                    alert("级别请输入数字")
+                } else {
+                    if (arr['id'] == '') {
+                        $.post("task/create", arr, function (e) {
+                            if (e.code == 2001) {
+                                $('.alert').addClass('alert-success').text(e.msg).hide(2000)
+                            } else {
+                                $('.alert').addClass('alert-danger').text(e.msg).hide(2000)
+                            }
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000)
+                        })
+                    } else {
+                        $.post("http://localhost:8080/task/editor/" + arr['id'], arr, function (e) {
+                            if (e.code == 2001) {
+                                $('.alert').addClass('alert-success').text(e.msg).hide(2000)
+                            } else {
+                                $('.alert').addClass('alert-danger').text(e.msg).hide(2000)
+                            }
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000)
+                        })
+                    }
+                }
+
+            });
+
+            // A few jQuery helpers for exporting only
+            jQuery.fn.pop = [].pop;
+            jQuery.fn.shift = [].shift;
+
+
+        })(jQuery);
+    </script>
+</body>
+
+</html>
